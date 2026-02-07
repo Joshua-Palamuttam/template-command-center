@@ -1,0 +1,10 @@
+# Daily plans are personal and ephemeral - don't commit
+# Uncomment the line below if you want to keep daily plans local only
+# context/daily/*.md
+
+# Session scratch files
+context/notes/scratch-*
+
+# OS files
+.DS_Store
+Thumbs.db

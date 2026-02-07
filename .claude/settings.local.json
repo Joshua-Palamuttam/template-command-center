@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/schema/settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "mcp__claude_ai_Atlassian__*",
+      "mcp__claude_ai_Slack_MCP__*",
+      "mcp__claude_ai_Figma__*"
+    ]
+  }
+}
