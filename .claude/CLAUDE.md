@@ -21,10 +21,50 @@ Every session in this workspace should start by checking for today's daily plan.
 **At the start of EVERY session**, do the following before anything else:
 
 1. Check if a daily plan exists for today at `context/daily/YYYY-MM-DD.md`
-2. If it exists, read it and briefly summarize: how many items are planned, how many are done, and what the top priority is. Ask if priorities have shifted.
-3. If it doesn't exist, suggest running the morning-triage agent to create one.
+2. Check if a weekly plan exists at `context/weekly/YYYY-WNN.md`
+3. If both exist: briefly summarize daily progress (items done/total), weekly capacity (hours committed/available), and the top priority. Ask if priorities have shifted.
+4. If the daily plan is missing, suggest running the morning-triage agent.
+5. If the weekly plan is missing, suggest running the weekly-plan agent.
 
-This is non-negotiable. The daily plan is the backbone of staying focused.
+This is non-negotiable. The daily plan keeps you focused. The weekly plan keeps you honest about capacity.
+
+## Capacity Model
+
+Assume the following unless the user provides different numbers:
+
+```
+Daily productive hours:  5-6h  (not 8 — meetings, Slack, context switching)
+Weekly productive hours: 22-24h
+Meeting overhead:        8-10h/week (adjust based on actual calendar)
+Slack/comms overhead:    3h/week
+Context switching:       2h/week
+Interrupt buffer:        3h/week (non-negotiable — interrupts are guaranteed)
+```
+
+When assessing whether something fits in the schedule, always use the realistic capacity, never the theoretical 40h.
+
+## Estimation Philosophy
+
+**The user chronically underestimates task duration.** Every estimate must account for this:
+
+1. Break tasks into subtasks including "hidden work" (PR review cycles, merge conflicts, Slack alignment, deploy verification)
+2. Apply multipliers based on familiarity:
+   - Familiar code + clear requirements: 1.5x gut estimate
+   - Unfamiliar code OR unclear requirements: 2x
+   - Unfamiliar code AND unclear requirements: 2.5x
+3. Never give best-case as the timeline. Always communicate the realistic estimate.
+4. Track actuals vs estimates in the weekly plan to calibrate over time.
+
+When the user says "it should only take X hours" — that's the bias. Ask them to walk through the subtasks. The breakdown always reveals more work.
+
+## Weekly Plan File Format
+
+Weekly plans are stored at `context/weekly/YYYY-WNN.md` (e.g., `2026-W06.md`). See the weekly-plan agent for the full format. Key sections:
+- Capacity calculation
+- Committed work with estimates and actuals
+- Stretch goals (not commitments)
+- Estimation accuracy tracker
+- Interrupts log
 
 ## Slack Channel Map
 
@@ -76,15 +116,20 @@ Daily plans are stored at `context/daily/YYYY-MM-DD.md` with this structure:
 ```markdown
 # Daily Plan - YYYY-MM-DD
 
+## Capacity Today
+- Available hours: Xh (after meetings)
+- Committed: Xh
+- Remaining: Xh
+
 ## DMs and @Mentions
-- [ ] @person — summary of what they need (DM / #channel mention)
+- [ ] @person — summary of what they need (DM / #channel mention) [est: Xh]
 
 ## Top Priorities
-1. [ ] Priority item (WHY: reason this matters, WHO is waiting)
-2. [ ] Priority item (WHY: reason, DEADLINE: if applicable)
+1. [ ] Priority item (WHY: reason, WHO is waiting) [est: Xh]
+2. [ ] Priority item (WHY: reason, DEADLINE: date) [est: Xh]
 
 ## Carried Forward
-- [ ] Item from yesterday (originally planned YYYY-MM-DD)
+- [ ] Item from yesterday (originally planned YYYY-MM-DD) [est: Xh]
 
 ## Slack Threads Needing Response
 - #channel - thread summary (from @person)
@@ -92,12 +137,18 @@ Daily plans are stored at `context/daily/YYYY-MM-DD.md` with this structure:
 ## Meetings Today
 - HH:MM - Meeting name (context: relevant ticket/doc)
 
+## Interrupts
+(Added as they happen — track what was not planned)
+- [time] Interrupt from [who]: [what] [est: Xh, actual: Xh]
+
 ## Notes
 (Added throughout the day)
 
 ## End of Day
 - Completed: X/Y items
+- Planned hours: Xh | Actual hours: Yh
 - Unanswered DMs: any
+- Interrupts absorbed: Xh
 - Rolled forward: list
 - Blockers: any
 ```

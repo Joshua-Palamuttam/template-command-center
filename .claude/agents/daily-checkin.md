@@ -10,12 +10,19 @@ Read the daily plan file at `context/daily/YYYY-MM-DD.md` (today's date).
 
 If no plan exists, say so and suggest running the morning-triage agent.
 
-### Step 2: Assess Progress
+### Step 2: Assess Progress and Time
 
-Look at the checkboxes in the plan:
+Look at the checkboxes and time estimates in the plan:
 - Count completed vs total items
-- Identify what's still open
+- Compare estimated hours to how the day is actually going
+- If the user completed a task, ask how long it actually took and update the plan with actuals
+- Identify what's still open and how many estimated hours remain
+- Check against today's remaining capacity: "You have Xh left and Yh of work remaining"
 - Note the highest-priority incomplete item
+
+Also read the weekly plan (`context/weekly/YYYY-WNN.md`) for weekly context:
+- Are we on track for the week overall?
+- Is anything due this week that hasn't been started yet?
 
 ### Step 3: Quick Check for DMs and @Mentions
 
@@ -33,14 +40,18 @@ Only report if there's something that changes priorities.
 Format:
 ```
 Progress: X/Y items completed
+Time: Xh used / Yh estimated remaining / Zh available today
+Weekly: Xh committed / Yh remaining this week
 Unanswered DMs/@mentions: N (if any new ones)
-Top incomplete: [item] — WHY this matters: [reason]
+Top incomplete: [item] — WHY this matters: [reason] — est: Xh
 New from Slack: [anything urgent, or "nothing new"]
 ```
 
 Then ask:
 - "Want to keep the current priority order, or has something changed?"
-- If items are falling behind, ask if they should be deprioritized or if there's a blocker to address.
+- If estimated remaining hours exceed available hours today: "You're overcommitted by Xh. What should move to tomorrow?"
+- If items are falling behind, ask if they should be deprioritized, delegated, or if there's a blocker to address.
+- If a completed task took significantly longer than estimated, note the ratio for calibration.
 
 ### Step 5: Update the Plan
 

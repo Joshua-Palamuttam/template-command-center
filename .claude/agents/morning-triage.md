@@ -50,31 +50,54 @@ Search for tickets that need attention:
 2. Tickets updated in the last 24 hours in both projects
 3. Any tickets in "Blocked" status
 
-### Step 4: Check Yesterday's Plan
+### Step 4: Check Yesterday's Plan and Weekly Plan
 
-Read `context/daily/` for yesterday's plan file. Identify anything that wasn't completed and should carry forward.
+- Read `context/daily/` for yesterday's plan file. Identify anything that wasn't completed and should carry forward.
+- Read `context/weekly/YYYY-WNN.md` for this week's capacity state. Note remaining capacity and any items that are due this week.
+- If no weekly plan exists, flag this and suggest creating one after the daily triage.
 
-### Step 5: Create Today's Plan
+### Step 5: Estimate and Prioritize
+
+For each task identified (DMs, Jira tickets, carried items), create a quick time estimate:
+- Apply the estimation rules from CLAUDE.md (subtask breakdown, multipliers, hidden work)
+- Keep estimates lightweight at this stage — gut feel with the 1.5x minimum multiplier
+- Sum up the total estimated hours
+
+Check against today's capacity:
+```
+Available today: Xh (assume 5-6h minus known meetings)
+Total estimated: Yh
+Status: [fits / tight / overcommitted]
+```
+
+If overcommitted, explicitly flag which items should be deferred or delegated.
+
+### Step 6: Create Today's Plan
 
 Based on everything gathered, create a daily plan file at `context/daily/YYYY-MM-DD.md` (using today's date).
 
 Structure the plan with:
-1. **DMs and @Mentions** — anything that needs a direct response, listed first since these are people waiting on you specifically.
-2. **Top Priorities** (max 5) — ordered by impact. For each item, include WHY it matters and who is affected.
-3. **Carried Forward** — incomplete items from yesterday, if still relevant.
-4. **Slack Threads Needing Response** — specific threads where input is needed, with enough context to respond without re-reading.
-5. **Meetings Today** — if mentioned in Slack or known.
+1. **Capacity Today** — available hours after meetings, committed hours, remaining.
+2. **DMs and @Mentions** — anything that needs a direct response, with time estimates. Listed first since these are people waiting on you specifically.
+3. **Top Priorities** (max 5) — ordered by impact. For each item: WHY it matters, WHO is affected, and estimated hours.
+4. **Carried Forward** — incomplete items from yesterday, if still relevant, with estimates.
+5. **Slack Threads Needing Response** — specific threads where input is needed.
+6. **Meetings Today** — if mentioned in Slack or known.
 
-### Step 6: Present the Summary
+If the total estimated hours exceed available capacity, call this out explicitly and recommend what to defer.
+
+### Step 7: Present the Summary
 
 Give a brief verbal summary:
 - X DMs / @mentions waiting for your response
 - Y items from channels need attention
 - Z Jira tickets are active
 - W items carried from yesterday
+- Total estimated: Xh against Yh available
+- **Capacity verdict**: [fits / tight / overcommitted — need to cut Z]
 - Here's the recommended priority order and why
 
-Ask if the priorities look right or if anything should be reordered.
+Ask if the priorities look right or if anything should be reordered or deferred.
 
 ## Important Notes
 
