@@ -13,7 +13,7 @@ Every session in this workspace should start by checking for today's daily plan.
 - **Organization**: SeekOut (Zipstorm on GitHub)
 - **Slack Display Name**: `@Joshua Palamuttam` — use this when searching for DMs and @mentions
 - **Core Repositories**: AI-1099, agents, backend, backend-e2e, recruit-api, integrations, integrations-databricks, analytics-api, analytics-functions, ui-1099, spot-messaging
-- **Jira Project Keys**: AI-1099, RUN
+- **Jira Project Keys**: AI1099, RUN
 - **Confluence Spaces**: "AI 1099", "Runtime"
 
 ## Accountability Loop
@@ -91,7 +91,7 @@ These are the channels to monitor, organized by category:
 
 ## Jira Context
 
-- Project **AI-1099**: The main AI product Jira board. Tickets follow the pattern `AI-NNNN`.
+- Project **AI1099**: The main AI product Jira board. Tickets follow the pattern `AI1099-NNNN`.
 - Project **RUN**: Runtime infrastructure. Tickets follow the pattern `RUN-NNN`.
 - When reviewing tickets, always check for linked Confluence docs, linked tickets, and recent comments.
 
@@ -103,7 +103,7 @@ These are the channels to monitor, organized by category:
 ## Quarterly Goals
 
 Joshua is on two teams with goals tracked across Jira epics and Confluence:
-- **AI-1099 team**: Epics in AI-1099 project + docs in "AI 1099" Confluence space
+- **AI1099 team**: Epics in AI1099 project + docs in "AI 1099" Confluence space
 - **Runtime team**: Epics in RUN project + docs in "Runtime" Confluence space
 
 Goals file: `context/goals/YYYY-QN.md` (e.g., `2026-Q1.md`)
