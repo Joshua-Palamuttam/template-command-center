@@ -77,6 +77,7 @@ These are the channels to monitor, organized by category:
 - `product-updates` - Broader product updates
 
 **Engineering** (what the team is building):
+- `spot-development` - Deployments, hotfixes, release pipeline notifications, engineering announcements
 - `spot-backend-devs` - Backend engineering discussion
 - `spot-pr-reviews` - PR review requests and discussions
 
