@@ -56,23 +56,33 @@ Search for tickets that need attention:
 - Read `context/weekly/YYYY-WNN.md` for this week's capacity state. Note remaining capacity and any items that are due this week.
 - If no weekly plan exists, flag this and suggest creating one after the daily triage.
 
-### Step 5: Estimate and Prioritize
+### Step 5: Get Today's Calendar
+
+Check `context/calendar/YYYY-WNN.md` for today's actual meeting schedule.
+- If the file exists, use the real meeting hours and available hours for today.
+- If the file is missing or outdated, suggest running `calendar-sync` first.
+- Note the best focus blocks (longest meeting-free stretches) for scheduling deep work.
+
+### Step 6: Estimate and Prioritize
 
 For each task identified (DMs, Jira tickets, carried items), create a quick time estimate:
-- Apply the estimation rules from CLAUDE.md (subtask breakdown, multipliers, hidden work)
-- Keep estimates lightweight at this stage — gut feel with the 1.5x minimum multiplier
+- Read `context/calibration.md` for calibrated multipliers and pace factor
+- Apply calibrated multipliers if available, otherwise use defaults from CLAUDE.md
+- Keep estimates lightweight at this stage — gut feel with the calibrated minimum multiplier
 - Sum up the total estimated hours
 
-Check against today's capacity:
+Check against today's real capacity (from calendar):
 ```
-Available today: Xh (assume 5-6h minus known meetings)
-Total estimated: Yh
+Meetings today: Xh (from calendar-sync)
+Available today: Yh (6h minus meetings, adjusted for pace factor)
+Total estimated: Zh
 Status: [fits / tight / overcommitted]
+Best focus block: HH:MM - HH:MM (Xh uninterrupted)
 ```
 
 If overcommitted, explicitly flag which items should be deferred or delegated.
 
-### Step 6: Create Today's Plan
+### Step 7: Create Today's Plan
 
 Based on everything gathered, create a daily plan file at `context/daily/YYYY-MM-DD.md` (using today's date).
 
@@ -86,7 +96,7 @@ Structure the plan with:
 
 If the total estimated hours exceed available capacity, call this out explicitly and recommend what to defer.
 
-### Step 7: Present the Summary
+### Step 8: Present the Summary
 
 Give a brief verbal summary:
 - X DMs / @mentions waiting for your response

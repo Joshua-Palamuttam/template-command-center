@@ -15,6 +15,15 @@ The user will describe a task. It might be:
 
 ## Process
 
+### Step 0: Load Calibration Data
+
+**Before doing anything else**, read `context/calibration.md` to get:
+- Calibrated multipliers (if enough samples exist, use these instead of defaults)
+- Current pace factor (if the running average is below 1.0, apply it as an additional multiplier)
+- Overall estimation ratio trend (is the user getting more accurate or still underestimating?)
+
+If the calibration file has `high` confidence data for a category, use the calibrated multiplier. If `medium`, use the calibrated multiplier but never go below the default. If `low`, use the default.
+
 ### Step 1: Understand the Task
 
 If given a Jira ticket, fetch it using `mcp__claude_ai_Atlassian__getJiraIssue`. Get the full picture including comments and linked docs.
@@ -51,15 +60,22 @@ Coordination work (if applicable):
 
 ### Step 3: Apply Multipliers
 
-Take the raw subtask sum and apply:
+Take the raw subtask sum and apply the appropriate multiplier. **Check calibration.md first** — if calibrated values exist with medium or high confidence, use those instead of the defaults below.
 
-| Condition | Multiplier |
-|-----------|-----------|
-| Familiar code, clear requirements | 1.5x |
-| Familiar code, unclear requirements | 1.75x |
-| Unfamiliar code, clear requirements | 2x |
-| Unfamiliar code, unclear requirements | 2.5x |
-| Involves a system you've never touched | 3x |
+| Condition | Default | Use calibrated if available |
+|-----------|---------|----------------------------|
+| Familiar code, clear requirements | 1.5x | Yes |
+| Familiar code, unclear requirements | 1.75x | Yes |
+| Unfamiliar code, clear requirements | 2x | Yes |
+| Unfamiliar code, unclear requirements | 2.5x | Yes |
+| Involves a system you've never touched | 3x | Yes |
+
+Additionally, check the **pace factor** from calibration.md. If the running average pace factor is below 1.0 (meaning tasks consistently take longer than even the calibrated estimates), apply an additional adjustment:
+- Pace factor 0.9 → multiply estimate by 1.1
+- Pace factor 0.8 → multiply estimate by 1.25
+- Pace factor 0.7 → multiply estimate by 1.4
+
+This accounts for weeks where energy, focus, or external factors slow things down. The pace factor adapts automatically over time.
 
 These are NOT padding — they account for the unknown unknowns that always appear.
 
@@ -121,3 +137,5 @@ If they push back:
 - Calendar time != effort hours. Account for the fact that the user has meetings, Slack, other priorities, and does not get 8h of focused coding per day. Assume 5-6h of productive work per day.
 - If the user says "but it's simple, it should only take X hours" — that's the bias talking. Ask them to walk through the subtasks. The breakdown always reveals more work than expected.
 - Track actuals in the weekly plan. Over time, this data will calibrate the multipliers to the user's actual patterns.
+- **After producing an estimate**, always note the category used so the calibration file can be updated when actuals are known. Include a line like: `Calibration category: familiar/clear | Multiplier used: 1.5x (default)` or `Calibration category: unfamiliar/unclear | Multiplier used: 2.8x (calibrated)`
+- The system gets smarter over time. The first few weeks use defaults. After 5+ tracked tasks per category, calibrated multipliers take over. After 15+, the system is tuned to the user's actual patterns.

@@ -100,12 +100,46 @@ These are the channels to monitor, organized by category:
 - Space **AI 1099**: Design docs, architecture RFCs, feature specs for the AI product.
 - Space **Runtime**: Infrastructure docs, runbooks, deployment procedures.
 
+## Quarterly Goals
+
+Joshua is on two teams with goals tracked across Jira epics and Confluence:
+- **AI-1099 team**: Epics in AI-1099 project + docs in "AI 1099" Confluence space
+- **Runtime team**: Epics in RUN project + docs in "Runtime" Confluence space
+
+Goals file: `context/goals/YYYY-QN.md` (e.g., `2026-Q1.md`)
+
+**Mid-quarter goal additions are normal.** When new goals appear:
+1. Run the quarterly-goals agent to assess capacity impact
+2. Log the change in the scope change log
+3. Communicate what gets displaced
+
+Weekly plans should always reference quarterly goals. If a weekly plan has no hours mapped to an at-risk goal, flag it.
+
+## Calendar Integration
+
+Meeting data comes from Outlook Web via Chrome browser automation.
+- Calendar file: `context/calendar/YYYY-WNN.md`
+- Run the `calendar-sync` agent to refresh from Outlook
+- Morning triage and weekly planning use this for real capacity numbers instead of guesses
+- If the calendar file is stale (older than the current week), suggest re-syncing
+
+## Estimation Calibration
+
+The system learns over time. Estimation accuracy data lives in `context/calibration.md`.
+- Tracks actual vs estimated hours per task
+- Adjusts multipliers as data accumulates (low/medium/high confidence thresholds)
+- Tracks a weekly pace factor to account for energy, focus, and mental load variations
+- The estimate agent reads this file before every estimation
+
+**Pace factor**: Some weeks are slower and that's fine. The system doesn't judge — it adjusts. A pace factor of 0.8 means "this week, things are taking 25% longer than normal" and estimates are adjusted accordingly.
+
 ## Tool Usage
 
 This workspace leverages MCP integrations:
 - **Atlassian**: For Jira and Confluence (read tickets, search, read docs)
 - **Slack**: For channel reading, thread reading, and sending messages
 - **Figma**: For design context when reviewing UI-related work
+- **Chrome**: For reading Outlook Web calendar and other browser-based tasks
 
 When using these tools, always prefer structured summaries over raw dumps. Extract what matters, flag what needs attention, and skip the noise.
 
