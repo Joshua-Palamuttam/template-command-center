@@ -137,3 +137,7 @@ template:
   private_agents:                       # Agents that should NOT sync to the public template
     # - "my-custom-workflow"            # Example: agent only relevant to your setup
     # - "team-specific-process"         # Example: agent with org-specific process
+  private_skills:                       # Skills that should NOT sync to the public template
+    # - "my-private-skill"             # Example: skill only relevant to your setup
+  private_hooks:                        # Hook scripts that should NOT sync to the public template
+    # - "my-custom-hook.py"            # Example: hook only relevant to your setup

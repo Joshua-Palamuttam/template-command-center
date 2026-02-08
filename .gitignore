@@ -10,6 +10,9 @@ context/calibration.md
 # Session scratch files
 context/notes/scratch-*
 
+# Python bytecode
+__pycache__/
+
 # OS files
 .DS_Store
 Thumbs.db

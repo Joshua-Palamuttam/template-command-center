@@ -97,7 +97,36 @@ Command Center is a set of Claude Code agents and a structured workflow for mana
 | `interrupt` | Sizes an incoming interrupt and shows impact on current commitments |
 | `delegate-or-own` | Helps decide whether to do a task yourself or hand it off |
 | `calendar-sync` | Reads Outlook/Google calendar via browser automation |
-| `template-sync` | Syncs template files between private instance and public repo |
+| `template-sync` | Syncs agents, skills, and hooks between private instance and public repo |
+| `weekly-retro` | Reviews planned vs actual, updates calibration data, surfaces patterns |
+| `status-report` | Generates stakeholder-ready status update grouped by quarterly goals |
+| `ticket-breakdown` | Decomposes epics/stories into estimated subtasks including hidden work |
+| `slack-drafter` | Drafts principal-level Slack responses with Jira/Confluence backing context |
+
+## Skills
+
+Slash-command shortcuts for frequent workflows. Skills follow the [Agent Skills](https://agentskills.io/specification) open standard.
+
+| Skill | What it does |
+|-------|-------------|
+| `/standup` | 3-line standup summary: yesterday, today, blockers |
+| `/capacity` | Show remaining hours today and this week, flag overcommitment |
+| `/log-interrupt` | Append an interrupt to today's daily plan with timestamp |
+| `/draft-reply` | Search a Slack channel, read a thread, draft a response with backing context |
+| `/wrap-up` | Update daily plan with progress — lighter than `end-of-day` |
+| `/what-next` | Recommend the next highest-impact task based on remaining capacity |
+
+## Hooks
+
+Deterministic automation on Claude Code lifecycle events. Configured in `.claude/settings.local.json`, scripts in `.claude/hooks/`.
+
+| Hook | Event | What it does |
+|------|-------|-------------|
+| `session-start-check.py` | `SessionStart` | Verifies daily/weekly plans exist and are current |
+| `pre-compact-context.py` | `PreCompact` | Preserves priorities and capacity across context compression |
+| `log-slack-send.py` | `PostToolUse` | Logs outbound Slack messages to daily plan Notes section |
+| `inject-daily-context.py` | `UserPromptSubmit` | Injects top 3 priorities as ambient context each turn |
+| *(inline prompt)* | `Stop` | Nudges to update daily plan after significant work |
 
 ## MCP Integrations
 
@@ -114,8 +143,11 @@ This workspace expects the following MCP servers configured in Claude Code:
 command-center/
 ├── .claude/
 │   ├── CLAUDE.md              # Main instructions (reads config.yaml at session start)
-│   ├── agents/                # All agent definitions
-│   └── settings.local.json    # MCP tool permissions
+│   ├── agents/                # Agent definitions (.md files)
+│   ├── skills/                # Skill definitions (Agent Skills standard)
+│   │   └── <name>/SKILL.md   # Each skill in its own directory
+│   ├── hooks/                 # Lifecycle hook scripts (.py)
+│   └── settings.local.json    # MCP tool permissions + hooks config
 ├── .gitignore.template         # Public repo's .gitignore (used by template-sync)
 ├── config.example.yaml        # Template — copy to config.yaml
 ├── config.yaml                # Your personal config (gitignored)
@@ -136,8 +168,9 @@ command-center/
 ## Daily Workflow
 
 1. **Morning**: Run `morning-triage` — it scans everything and creates your daily plan
-2. **Mid-day**: Run `daily-checkin` — quick progress check, reprioritize if needed
+2. **Mid-day**: Run `daily-checkin` or `/what-next` — progress check, pick next task
 3. **As needed**: Run `estimate`, `meeting-prep`, `pr-context`, `interrupt`, or `delegate-or-own`
-4. **End of day**: Run `end-of-day` — capture what happened, set up tomorrow
-5. **Weekly**: Run `weekly-plan` on Monday, review on Friday (updates calibration data)
-6. **Quarterly**: Run `quarterly-goals` to set up and track quarterly objectives
+4. **Quick actions**: `/standup`, `/capacity`, `/log-interrupt`, `/draft-reply`
+5. **End of day**: Run `/wrap-up` for a quick update or `end-of-day` for the full close-out
+6. **Weekly**: Run `weekly-plan` on Monday, `weekly-retro` on Friday (feeds calibration data)
+7. **Quarterly**: Run `quarterly-goals` to set up and track quarterly objectives
