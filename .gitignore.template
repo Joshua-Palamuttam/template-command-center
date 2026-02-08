@@ -1,0 +1,15 @@
+# Personal configuration (contains names, orgs, channels, etc.)
+config.yaml
+
+# Context files are personal and ephemeral — don't commit
+context/active/*
+!context/active/.gitkeep
+context/archive/
+context/calibration.md
+
+# Session scratch files
+context/notes/scratch-*
+
+# OS files
+.DS_Store
+Thumbs.db

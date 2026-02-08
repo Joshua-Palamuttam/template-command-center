@@ -127,3 +127,13 @@ estimation:
 calendar:
   provider: "outlook"                   # "outlook" or "google" — used by calendar-sync agent
   url: "https://outlook.office.com/calendar/view/workweek"  # Calendar URL for browser automation
+
+# ─── Template Sync ─────────────────────────────────────────────────────────
+#
+# If you use a private instance with the public template as an upstream remote,
+# configure which agents are private (not synced to the public template).
+
+template:
+  private_agents:                       # Agents that should NOT sync to the public template
+    # - "my-custom-workflow"            # Example: agent only relevant to your setup
+    # - "team-specific-process"         # Example: agent with org-specific process

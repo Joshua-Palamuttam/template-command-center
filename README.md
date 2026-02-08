@@ -24,6 +24,50 @@ An operational hub for senior/principal software engineers, powered by Claude Co
 
 5. **Open in Claude Code** — start a session and Claude will read your config automatically.
 
+## Private Instance Setup
+
+If you want to version-control your personal files (config, daily plans, goals, calibration), you can use a private repo as your daily driver with this public repo as an upstream template.
+
+1. **Create a private repo**
+   ```bash
+   gh repo create <your-user>/command-center-private --private
+   ```
+
+2. **Clone the public template and re-point remotes**
+   ```bash
+   git clone https://github.com/Joshua-Palamuttam/command-center.git command-center
+   cd command-center
+   git remote rename origin template
+   git remote add origin https://github.com/<your-user>/command-center-private.git
+   ```
+
+3. **Replace `.gitignore`** — the public `.gitignore` excludes personal files. For a private repo, you want a minimal one:
+   ```gitignore
+   # OS files
+   .DS_Store
+   Thumbs.db
+
+   # Session scratch files
+   context/notes/scratch-*
+   ```
+
+4. **Copy and fill in your config**
+   ```bash
+   cp config.example.yaml config.yaml
+   # Edit config.yaml with your values
+   ```
+
+5. **Commit and push**
+   ```bash
+   git add .
+   git commit -m "Initialize private instance"
+   git push -u origin main
+   ```
+
+Now `origin` points to your private repo and `template` points to the public template. Use the `template-sync` agent to push improvements back to the template or pull updates from it.
+
+The file `.gitignore.template` in your private repo represents what the public repo's `.gitignore` should look like. The `template-sync` agent handles this mapping automatically.
+
 ## What It Does
 
 Command Center is a set of Claude Code agents and a structured workflow for managing your engineering work. It integrates with Slack, Jira, Confluence, and your calendar to:
@@ -53,6 +97,7 @@ Command Center is a set of Claude Code agents and a structured workflow for mana
 | `interrupt` | Sizes an incoming interrupt and shows impact on current commitments |
 | `delegate-or-own` | Helps decide whether to do a task yourself or hand it off |
 | `calendar-sync` | Reads Outlook/Google calendar via browser automation |
+| `template-sync` | Syncs template files between private instance and public repo |
 
 ## MCP Integrations
 
@@ -71,6 +116,7 @@ command-center/
 │   ├── CLAUDE.md              # Main instructions (reads config.yaml at session start)
 │   ├── agents/                # All agent definitions
 │   └── settings.local.json    # MCP tool permissions
+├── .gitignore.template         # Public repo's .gitignore (used by template-sync)
 ├── config.example.yaml        # Template — copy to config.yaml
 ├── config.yaml                # Your personal config (gitignored)
 ├── context/
