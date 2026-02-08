@@ -6,6 +6,14 @@
 
 If `config.yaml` does not exist, tell the user to copy `config.example.yaml` to `config.yaml` and fill in their values.
 
+## Claude Code Settings
+
+The `.claude/` directory contains all Claude Code configuration for this workspace:
+
+- **`.claude/CLAUDE.md`** — This file. Read automatically at session start. Defines session behavior, accountability loops, and all workflow instructions.
+- **`.claude/agents/`** — Agent definitions. Each `.md` file is a standalone agent invoked via Claude Code's agent system (e.g., `morning-triage`, `weekly-plan`, `template-sync`).
+- **`.claude/settings.local.json`** — MCP tool permissions. Pre-approves Atlassian, Slack, Figma, git, and web search so agents can run without repeated permission prompts.
+
 ## What This Is
 
 This is the operational hub for a senior/principal software engineer. It is NOT a code repository. It is where you come to think, plan, gather context, and stay accountable.
