@@ -1,11 +1,16 @@
 {
-  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/schema/settings.json",
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
       "Bash(git *)",
       "mcp__claude_ai_Atlassian__*",
       "mcp__claude_ai_Slack_MCP__*",
-      "mcp__claude_ai_Figma__*"
+      "mcp__claude_ai_Figma__*",
+      "Bash(python:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix Jira project key AI-1099 → AI1099 and add daily plan\n\nThe Jira project key was incorrect \\(hyphenated\\) causing JQL queries\nto return zero results. Also adds the Feb 9 morning triage daily plan.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd spot-development channel, Q1 goals, and finalize daily triage\n\n- Add #spot-development to Slack channel monitor list in CLAUDE.md\n- Create Q1 goals file with CTO MCP directive and active goals\n- Update daily plan with MCP priority, cleared items, and worktree status\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "WebSearch",
+      "Bash(git commit:*)"
     ]
   }
 }
