@@ -2,10 +2,9 @@
 config.yaml
 
 # Context files are personal and ephemeral — don't commit
-context/daily/*.md
-context/weekly/*.md
-context/goals/*.md
-context/calendar/*.md
+context/active/*
+!context/active/.gitkeep
+context/archive/
 context/calibration.md
 
 # Session scratch files

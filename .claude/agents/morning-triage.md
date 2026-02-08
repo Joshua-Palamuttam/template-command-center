@@ -35,13 +35,13 @@ Search for tickets that need attention using the project keys from `config.yaml:
 
 ### Step 4: Check Yesterday's Plan and Weekly Plan
 
-- Read `context/daily/` for yesterday's plan file. Identify anything that wasn't completed and should carry forward.
-- Read `context/weekly/YYYY-WNN.md` for this week's capacity state. Note remaining capacity and any items that are due this week.
+- Read `context/active/daily.md` for yesterday's plan (if the date in it is a previous day, it hasn't been archived yet). Identify anything that wasn't completed and should carry forward.
+- Read `context/active/weekly.md` for this week's capacity state. Note remaining capacity and any items that are due this week.
 - If no weekly plan exists, flag this and suggest creating one after the daily triage.
 
 ### Step 5: Get Today's Calendar
 
-Check `context/calendar/YYYY-WNN.md` for today's actual meeting schedule.
+Check `context/active/calendar.md` for today's actual meeting schedule.
 - If the file exists, use the real meeting hours and available hours for today.
 - If the file is missing or outdated, suggest running `calendar-sync` first.
 - Note the best focus blocks (longest meeting-free stretches) for scheduling deep work.
@@ -65,9 +65,12 @@ Best focus block: HH:MM - HH:MM (Xh uninterrupted)
 
 If overcommitted, explicitly flag which items should be deferred or delegated.
 
-### Step 7: Create Today's Plan
+### Step 7: Archive Yesterday and Create Today's Plan
 
-Based on everything gathered, create a daily plan file at `context/daily/YYYY-MM-DD.md` (using today's date).
+Before creating today's plan:
+1. Check if `context/active/daily.md` exists and its date header is from a previous day.
+2. If so, move it to `context/archive/YYYY/MM/daily/YYYY-MM-DD.md` (creating directories as needed).
+3. Then create a fresh `context/active/daily.md`.
 
 Structure the plan with:
 1. **Capacity Today** — available hours after meetings, committed hours, remaining.

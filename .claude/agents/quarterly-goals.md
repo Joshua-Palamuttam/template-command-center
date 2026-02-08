@@ -32,7 +32,9 @@ For each team in `config.yaml: teams[]`:
 
 #### Step 2: Structure the Goals
 
-Create a goals file at `context/goals/YYYY-QN.md`:
+Before creating a new goals file, check if `context/active/goals.md` exists from a previous quarter. If so, archive it to `context/archive/YYYY/QN/goals.md` (creating directories as needed).
+
+Then write the goals file to `context/active/goals.md`:
 
 ```markdown
 # Quarterly Goals — YYYY QN
@@ -152,7 +154,7 @@ If a Jira epic or Confluence doc exists, fetch it for details.
 
 #### Step 2: Assess Current Capacity
 
-Read `context/goals/YYYY-QN.md` and calculate:
+Read `context/active/goals.md` and calculate:
 ```
 Weeks remaining in quarter: X
 Remaining capacity: Yh (from weekly plans and current commitments)
@@ -216,7 +218,7 @@ Run this as part of the weekly plan or on-demand.
 
 #### Step 1: Read Current Goals
 
-Read `context/goals/YYYY-QN.md` for the active quarter.
+Read `context/active/goals.md` for the active quarter.
 
 #### Step 2: Check Jira Progress
 

@@ -20,8 +20,8 @@ The user may:
 Check all sources for this week's work:
 
 1. **Jira**: Search for tickets assigned to the user in all configured Jira projects (from `config.yaml: jira.projects`) that are in-progress or planned for this sprint using `mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql`.
-2. **Carried forward**: Read last week's plan (`context/weekly/`) for anything that rolled over.
-3. **Today's daily plan**: Check `context/daily/` for items already identified.
+2. **Carried forward**: Read last week's plan from `context/active/weekly.md` (if it's from a previous week) or `context/archive/` for anything that rolled over.
+3. **Today's daily plan**: Check `context/active/daily.md` for items already identified.
 4. **Slack**: Quick scan of engineering and operations channels (from `config.yaml: slack.channels`) for anything committed to but not yet in Jira.
 
 #### Step 2: Estimate Each Item
@@ -42,7 +42,7 @@ Present each estimate as a range: `best case / realistic / worst case`
 
 #### Step 2b: Read Calendar Data
 
-Check `context/calendar/YYYY-WNN.md` for this week's actual meeting schedule.
+Check `context/active/calendar.md` for this week's actual meeting schedule.
 - If the file exists, use the real meeting hours per day.
 - If the file doesn't exist or is outdated, suggest running the `calendar-sync` agent first to get accurate data.
 - Fall back to the default meeting overhead from `config.yaml: capacity.meeting_overhead` only if calendar sync isn't available.
@@ -56,7 +56,7 @@ Check `context/calibration.md` for:
 
 #### Step 2d: Check Quarterly Goals
 
-Read `context/goals/YYYY-QN.md` for active quarterly goals.
+Read `context/active/goals.md` for active quarterly goals.
 - Which goals have deliverables due this month?
 - Are any goals behind pace and need catch-up hours this week?
 - Were any new mid-quarter goals added recently?
@@ -77,13 +77,18 @@ Weekly capacity model:
   Productive hours:             Xh
 ```
 
-Use the real meeting hours from `context/calendar/YYYY-WNN.md` when available. If calendar data shows a heavy meeting week (15h+), call it out explicitly — productive capacity may be as low as 14-16h.
+Use the real meeting hours from `context/active/calendar.md` when available. If calendar data shows a heavy meeting week (15h+), call it out explicitly — productive capacity may be as low as 14-16h.
 
 The interrupt buffer is non-negotiable — something always comes up.
 
 #### Step 4: Create the Weekly Plan File
 
-Write to `context/weekly/YYYY-WNN.md`:
+Before creating the new plan:
+1. Check if `context/active/weekly.md` exists and is from a previous week.
+2. If so, archive it to `context/archive/YYYY/MM/weekly/YYYY-WNN.md` (creating directories as needed).
+3. Also archive `context/active/calendar.md` to `context/archive/YYYY/MM/calendar/YYYY-WNN.md` if it's from last week.
+
+Then write to `context/active/weekly.md`:
 
 ```markdown
 # Weekly Plan — Week of YYYY-MM-DD
@@ -152,7 +157,7 @@ Write to `context/weekly/YYYY-WNN.md`:
 
 #### Step 1: Read Current Weekly Plan
 
-Read `context/weekly/YYYY-WNN.md` for current capacity state.
+Read `context/active/weekly.md` for current capacity state.
 
 #### Step 2: Estimate the New Task
 
@@ -206,7 +211,7 @@ This is the learning loop. The more weeks of data, the more accurate future esti
 
 At the end of each week, also check quarterly goal progress:
 
-1. Read `context/goals/YYYY-QN.md`
+1. Read `context/active/goals.md`
 2. Update the weekly goal connection table based on actual work done
 3. Flag any goals that got zero hours this week
 4. Flag any at-risk goals that need catch-up next week

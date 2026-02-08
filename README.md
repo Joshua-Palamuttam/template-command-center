@@ -74,12 +74,16 @@ command-center/
 ├── config.example.yaml        # Template — copy to config.yaml
 ├── config.yaml                # Your personal config (gitignored)
 ├── context/
+│   ├── active/                # Current plans — agents always read/write here (gitignored)
+│   │   ├── daily.md           # Today's daily plan
+│   │   ├── weekly.md          # This week's plan
+│   │   ├── calendar.md        # This week's calendar
+│   │   └── goals.md           # Current quarter's goals
+│   ├── archive/               # Historical files, organized year/month (gitignored)
+│   │   └── YYYY/MM/daily/     # e.g., 2026/02/daily/2026-02-09.md
 │   ├── calibration.example.md # Template — copy to calibration.md
 │   ├── calibration.md         # Estimation calibration data (gitignored)
-│   ├── daily/                 # Daily plan files (gitignored)
-│   ├── weekly/                # Weekly plan files (gitignored)
-│   ├── goals/                 # Quarterly goal files (gitignored)
-│   └── calendar/              # Calendar data files (gitignored)
+│   └── notes/                 # Scratch notes
 └── README.md
 ```
 

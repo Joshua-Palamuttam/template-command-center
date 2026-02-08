@@ -33,7 +33,7 @@ Subtasks:
 
 ### Step 2: Show Current State
 
-Read today's daily plan (`context/daily/YYYY-MM-DD.md`) and the weekly plan (`context/weekly/YYYY-WNN.md`).
+Read today's daily plan (`context/active/daily.md`) and the weekly plan (`context/active/weekly.md`).
 
 Present:
 ```

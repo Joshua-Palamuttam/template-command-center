@@ -79,7 +79,7 @@ Subtract overheads:
 
 ### Step 5: Write Calendar File
 
-Save the parsed calendar to `context/calendar/YYYY-WNN.md`.
+Save the parsed calendar to `context/active/calendar.md`.
 
 This file is read by the weekly-plan and morning-triage agents to calculate real capacity instead of guessing.
 
@@ -94,7 +94,7 @@ After parsing, flag:
 ### For Daily Use
 
 When the morning-triage agent runs, it should:
-1. Check `context/calendar/YYYY-WNN.md` for today's meetings
+1. Check `context/active/calendar.md` for today's meetings
 2. If the file doesn't exist or is outdated, suggest running calendar-sync first
 3. Use the actual meeting hours instead of the default 8-10h/week assumption
 

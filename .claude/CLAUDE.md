@@ -25,8 +25,8 @@ The user's identity and organizational context are defined in `config.yaml`:
 
 **At the start of EVERY session**, do the following before anything else:
 
-1. Check if a daily plan exists for today at `context/daily/YYYY-MM-DD.md`
-2. Check if a weekly plan exists at `context/weekly/YYYY-WNN.md`
+1. Check if a daily plan exists at `context/active/daily.md`
+2. Check if a weekly plan exists at `context/active/weekly.md`
 3. If both exist: briefly summarize daily progress (items done/total), weekly capacity (hours committed/available), and the top priority. Ask if priorities have shifted.
 4. If the daily plan is missing, suggest running the morning-triage agent.
 5. If the weekly plan is missing, suggest running the weekly-plan agent.
@@ -64,7 +64,7 @@ When the user says "it should only take X hours" — that's the bias. Ask them t
 
 ## Weekly Plan File Format
 
-Weekly plans are stored at `context/weekly/YYYY-WNN.md` (e.g., `2026-W06.md`). See the weekly-plan agent for the full format. Key sections:
+The current weekly plan is at `context/active/weekly.md`. Previous weeks are archived to `context/archive/YYYY/MM/weekly/YYYY-WNN.md`. See the weekly-plan agent for the full format. Key sections:
 - Capacity calculation
 - Committed work with estimates and actuals
 - Stretch goals (not commitments)
@@ -101,7 +101,7 @@ Confluence spaces are defined in `config.yaml: confluence.spaces[]`. Each space 
 
 The user's team structure is defined in `config.yaml: teams[]`. Each team maps to a Jira project and Confluence space for goal tracking.
 
-Goals file: `context/goals/YYYY-QN.md` (e.g., `2026-Q1.md`)
+Goals file: `context/active/goals.md` (archived to `context/archive/YYYY/QN/goals.md` on quarter rollover)
 
 **Mid-quarter goal additions are normal.** When new goals appear:
 1. Run the quarterly-goals agent to assess capacity impact
@@ -114,7 +114,7 @@ Weekly plans should always reference quarterly goals. If a weekly plan has no ho
 
 Meeting data comes from the user's calendar via browser automation.
 - Calendar provider and URL are defined in `config.yaml: calendar`
-- Calendar file: `context/calendar/YYYY-WNN.md`
+- Calendar file: `context/active/calendar.md` (archived to `context/archive/YYYY/MM/calendar/YYYY-WNN.md`)
 - Run the `calendar-sync` agent to refresh from the calendar
 - Morning triage and weekly planning use this for real capacity numbers instead of guesses
 - If the calendar file is stale (older than the current week), suggest re-syncing
@@ -139,9 +139,30 @@ This workspace leverages MCP integrations:
 
 When using these tools, always prefer structured summaries over raw dumps. Extract what matters, flag what needs attention, and skip the noise.
 
+## Active vs Archive File Structure
+
+Current plans live in `context/active/` with fixed filenames:
+- `context/active/daily.md` — today's plan
+- `context/active/weekly.md` — this week's plan
+- `context/active/calendar.md` — this week's calendar
+- `context/active/goals.md` — current quarter's goals
+
+Historical files are archived under `context/archive/` organized by year/month:
+- `context/archive/YYYY/MM/daily/YYYY-MM-DD.md` — archived daily plans
+- `context/archive/YYYY/MM/weekly/YYYY-WNN.md` — archived weekly plans
+- `context/archive/YYYY/MM/calendar/YYYY-WNN.md` — archived calendar data
+- `context/archive/YYYY/QN/goals.md` — archived quarterly goals (quarter-scoped)
+
+**Archive process** (built into existing agents, no separate agent needed):
+- **Morning triage**: Before creating today's plan, checks if `context/active/daily.md` is from a previous day. If so, moves it to `context/archive/YYYY/MM/daily/YYYY-MM-DD.md`, then creates a fresh `context/active/daily.md`.
+- **Weekly plan**: Before creating this week's plan, archives `context/active/weekly.md` to `context/archive/YYYY/MM/weekly/YYYY-WNN.md` and `context/active/calendar.md` to `context/archive/YYYY/MM/calendar/YYYY-WNN.md`.
+- **Quarterly goals**: On quarter rollover, archives `context/active/goals.md` to `context/archive/YYYY/QN/goals.md`.
+
+Cross-quarter data (`context/calibration.md`, `context/notes/`) stays in place — not archived.
+
 ## Daily Plan File Format
 
-Daily plans are stored at `context/daily/YYYY-MM-DD.md` with this structure:
+The current daily plan is at `context/active/daily.md` with this structure:
 
 ```markdown
 # Daily Plan - YYYY-MM-DD

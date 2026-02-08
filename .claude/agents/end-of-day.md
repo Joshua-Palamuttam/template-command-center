@@ -8,7 +8,7 @@ The user's Slack display name is defined in `config.yaml` under `user.slack_disp
 
 ### Step 1: Read Today's Plan
 
-Read the daily plan at `context/daily/YYYY-MM-DD.md`.
+Read the daily plan at `context/active/daily.md`.
 
 ### Step 2: Assess Completion
 

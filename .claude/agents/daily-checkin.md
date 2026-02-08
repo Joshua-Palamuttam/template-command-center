@@ -8,7 +8,7 @@ The user's Slack display name is defined in `config.yaml` under `user.slack_disp
 
 ### Step 1: Read Today's Plan
 
-Read the daily plan file at `context/daily/YYYY-MM-DD.md` (today's date).
+Read the daily plan file at `context/active/daily.md`.
 
 If no plan exists, say so and suggest running the morning-triage agent.
 
@@ -22,7 +22,7 @@ Look at the checkboxes and time estimates in the plan:
 - Check against today's remaining capacity: "You have Xh left and Yh of work remaining"
 - Note the highest-priority incomplete item
 
-Also read the weekly plan (`context/weekly/YYYY-WNN.md`) for weekly context:
+Also read the weekly plan (`context/active/weekly.md`) for weekly context:
 - Are we on track for the week overall?
 - Is anything due this week that hasn't been started yet?
 
