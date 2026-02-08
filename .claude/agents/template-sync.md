@@ -104,7 +104,7 @@ Push local improvements to the public template repo.
    ```
 10. Offer to create a PR:
     ```bash
-    gh pr create --repo Joshua-Palamuttam/command-center --head template-update/YYYY-MM-DD --title "sync: update template files" --body "Updated files from private instance"
+    gh pr create --repo Joshua-Palamuttam/template-command-center --head template-update/YYYY-MM-DD --title "sync: update template files" --body "Updated files from private instance"
     ```
 11. Switch back to `main` and delete the local temp branch:
     ```bash

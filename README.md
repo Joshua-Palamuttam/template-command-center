@@ -35,7 +35,7 @@ If you want to version-control your personal files (config, daily plans, goals, 
 
 2. **Clone the public template and re-point remotes**
    ```bash
-   git clone https://github.com/Joshua-Palamuttam/command-center.git command-center
+   git clone https://github.com/Joshua-Palamuttam/template-command-center.git command-center
    cd command-center
    git remote rename origin template
    git remote add origin https://github.com/<your-user>/command-center-private.git
