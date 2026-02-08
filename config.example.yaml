@@ -1,0 +1,129 @@
+# Command Center Configuration
+#
+# Copy this file to config.yaml and fill in your values.
+# config.yaml is gitignored and will never be committed.
+#
+# Usage: CLAUDE.md instructs Claude to read this file at session start,
+# making all values available in context for every agent.
+
+# ─── User Identity ──────────────────────────────────────────────────────────
+
+user:
+  name: "Jane Smith"                    # Your full name
+  role: "Principal Software Engineer"   # Your job title
+  organization: "Acme Corp"            # Your company name
+  slack_display_name: "@Jane Smith"     # Exactly as it appears in Slack (used for DM/mention searches)
+
+# ─── GitHub ─────────────────────────────────────────────────────────────────
+
+github:
+  org: "acme-corp"                      # GitHub organization name
+  repositories:                         # Repos you actively work on
+    - "acme-corp/api-server"
+    - "acme-corp/web-client"
+    - "acme-corp/shared-libs"
+    - "acme-corp/infra"
+
+# ─── Jira ───────────────────────────────────────────────────────────────────
+
+jira:
+  projects:
+    - key: "PROJ"                       # Jira project key (used in JQL queries)
+      name: "Main Product"              # Human-readable name
+      description: "Core product features and bugs"
+      ticket_pattern: "PROJ-NNNN"       # Ticket ID format for reference
+    - key: "INFRA"
+      name: "Infrastructure"
+      description: "Platform and infrastructure work"
+      ticket_pattern: "INFRA-NNN"
+
+# ─── Confluence ─────────────────────────────────────────────────────────────
+
+confluence:
+  spaces:
+    - key: "PROJ"                       # Confluence space key
+      name: "Main Product"              # Space display name (used in CQL queries)
+      description: "Design docs, architecture RFCs, feature specs"
+    - key: "INFRA"
+      name: "Infrastructure"
+      description: "Runbooks, deployment procedures, architecture docs"
+
+# ─── Slack Channels ─────────────────────────────────────────────────────────
+#
+# Organize channels by category. Agents use categories for priority ordering:
+# operations channels are checked first (incidents), then product (customer impact),
+# then engineering (team work), then general.
+
+slack:
+  channels:
+    product:                            # Product health and customer-facing issues
+      - name: "product-issues"
+        description: "Product bugs and customer-facing issues"
+      - name: "product-updates"
+        description: "Product announcements and changes"
+
+    engineering:                         # What the team is building
+      - name: "engineering-general"
+        description: "Engineering discussion and announcements"
+      - name: "pr-reviews"
+        description: "PR review requests and discussions"
+      - name: "backend-devs"
+        description: "Backend engineering discussion"
+
+    operations:                          # Infrastructure and operations
+      - name: "ops-alerts"
+        description: "Operational alerts and incidents"
+      - name: "deployments"
+        description: "Deployment status and coordination"
+
+    general:                             # Company-wide
+      - name: "general"
+        description: "Company-wide announcements"
+      - name: "system-alerts"
+        description: "System alerts and monitoring"
+
+# ─── Teams ──────────────────────────────────────────────────────────────────
+#
+# If you're on multiple teams with separate goal tracking, list them here.
+# Used by the quarterly-goals and weekly-plan agents.
+
+teams:
+  - name: "Product Team"
+    jira_project: "PROJ"                # Maps to jira.projects[].key
+    confluence_space: "Main Product"    # Maps to confluence.spaces[].name
+  - name: "Infrastructure Team"
+    jira_project: "INFRA"
+    confluence_space: "Infrastructure"
+
+# ─── Capacity Model ────────────────────────────────────────────────────────
+#
+# Realistic capacity defaults. Adjust based on your actual schedule.
+# These are starting points — the system calibrates over time.
+
+capacity:
+  daily_productive_hours: "5-6"         # Not 8 — meetings, Slack, context switching
+  weekly_productive_hours: "22-24"
+  meeting_overhead: "8-10"              # Hours/week (adjust based on actual calendar)
+  slack_overhead: 3                     # Hours/week
+  context_switching: 2                  # Hours/week
+  interrupt_buffer: 3                   # Hours/week (non-negotiable — interrupts are guaranteed)
+
+# ─── Estimation Multipliers ─────────────────────────────────────────────────
+#
+# Applied to gut-feel estimates to produce realistic timelines.
+# These are defaults — the calibration system adjusts them over time
+# as you track actuals vs estimates.
+
+estimation:
+  multipliers:
+    familiar_clear: 1.5                 # Familiar code + clear requirements
+    familiar_unclear: 1.75              # Familiar code + unclear requirements
+    unfamiliar_clear: 2.0               # Unfamiliar code + clear requirements
+    unfamiliar_unclear: 2.5             # Unfamiliar code + unclear requirements
+    never_touched: 3.0                  # System you've never worked in
+
+# ─── Calendar ───────────────────────────────────────────────────────────────
+
+calendar:
+  provider: "outlook"                   # "outlook" or "google" — used by calendar-sync agent
+  url: "https://outlook.office.com/calendar/view/workweek"  # Calendar URL for browser automation

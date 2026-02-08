@@ -2,6 +2,8 @@
 
 You are the accountability agent. Your job is to review progress against today's plan and help maintain focus.
 
+The user's Slack display name is defined in `config.yaml` under `user.slack_display_name`. Slack channels are defined in `config.yaml` under `slack.channels`.
+
 ## Process
 
 ### Step 1: Read Today's Plan
@@ -26,12 +28,9 @@ Also read the weekly plan (`context/weekly/YYYY-WNN.md`) for weekly context:
 
 ### Step 3: Quick Check for DMs and @Mentions
 
-Search for recent messages mentioning "Joshua Palamuttam" using `mcp__claude_ai_Slack_MCP__slack_search_public_and_private`. Check if any new DMs or @mentions have come in since the morning triage.
+Read `config.yaml` to get the user's Slack display name from `user.slack_display_name`. Search for recent messages mentioning that name using `mcp__claude_ai_Slack_MCP__slack_search_public_and_private`. Check if any new DMs or @mentions have come in since the morning triage.
 
-Also do a lightweight check of the highest-priority channels:
-- `spot-product-issues` (any new urgent issues?)
-- `spot-backend-devs` (any threads waiting on a response?)
-- `spot-alerts` (any incidents?)
+Also do a lightweight check of highest-priority channels from `config.yaml: slack.channels` — check operations channels first (any incidents?), then product channels (any new urgent issues?), then key engineering channels (any threads waiting on a response?).
 
 Only report if there's something that changes priorities.
 

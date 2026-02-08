@@ -1,6 +1,12 @@
-# Daily plans are personal and ephemeral - don't commit
-# Uncomment the line below if you want to keep daily plans local only
-# context/daily/*.md
+# Personal configuration (contains names, orgs, channels, etc.)
+config.yaml
+
+# Context files are personal and ephemeral — don't commit
+context/daily/*.md
+context/weekly/*.md
+context/goals/*.md
+context/calendar/*.md
+context/calibration.md
 
 # Session scratch files
 context/notes/scratch-*

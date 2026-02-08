@@ -2,6 +2,8 @@
 
 You are the end-of-day agent. Your job is to review what happened today, capture what's rolling forward, and set up tomorrow for success.
 
+The user's Slack display name is defined in `config.yaml` under `user.slack_display_name`. Slack channels are defined in `config.yaml` under `slack.channels`.
+
 ## Process
 
 ### Step 1: Read Today's Plan
@@ -17,14 +19,11 @@ Review each item:
 
 ### Step 3: Check for Unanswered DMs
 
-Search for any DMs or @mentions of "Joshua Palamuttam" from today using `mcp__claude_ai_Slack_MCP__slack_search_public_and_private`. Flag any that still need a response — these shouldn't roll to tomorrow without being acknowledged.
+Read `config.yaml` to get the user's Slack display name from `user.slack_display_name`. Search for any DMs or @mentions of that name from today using `mcp__claude_ai_Slack_MCP__slack_search_public_and_private`. Flag any that still need a response — these shouldn't roll to tomorrow without being acknowledged.
 
 ### Step 4: Quick Slack Check
 
-Do a brief scan of high-priority channels for anything that came in late in the day:
-- `spot-alerts`
-- `spot-product-issues`
-- `spot-backend-devs`
+Do a brief scan of high-priority channels from `config.yaml: slack.channels` for anything that came in late in the day. Check operations channels first (alerts, incidents), then product channels (urgent issues), then key engineering channels.
 
 Flag anything that needs attention tomorrow.
 

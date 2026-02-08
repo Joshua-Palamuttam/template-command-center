@@ -1,20 +1,25 @@
 # Command Center
 
+## Session Bootstrap
+
+**Before doing anything else**, read `config.yaml` in the repository root. This file contains all personal configuration: user identity, GitHub org, Jira projects, Confluence spaces, Slack channels, team structure, capacity defaults, and estimation multipliers. Every agent and process in this workspace references config values loaded from this file.
+
+If `config.yaml` does not exist, tell the user to copy `config.example.yaml` to `config.yaml` and fill in their values.
+
 ## What This Is
 
-This is the operational hub for a principal software engineer at SeekOut. It is NOT a code repository. It is where you come to think, plan, gather context, and stay accountable.
+This is the operational hub for a senior/principal software engineer. It is NOT a code repository. It is where you come to think, plan, gather context, and stay accountable.
 
 Every session in this workspace should start by checking for today's daily plan.
 
 ## Role Context
 
-- **Name**: Joshua Palamuttam
-- **Role**: Principal Software Engineer
-- **Organization**: SeekOut (Zipstorm on GitHub)
-- **Slack Display Name**: `@Joshua Palamuttam` — use this when searching for DMs and @mentions
-- **Core Repositories**: AI-1099, agents, backend, backend-e2e, recruit-api, integrations, integrations-databricks, analytics-api, analytics-functions, ui-1099, spot-messaging
-- **Jira Project Keys**: AI1099, RUN
-- **Confluence Spaces**: "AI 1099", "Runtime"
+The user's identity and organizational context are defined in `config.yaml`:
+- **Name, role, organization**: `config.yaml: user.*`
+- **Slack display name**: `config.yaml: user.slack_display_name` — use this when searching for DMs and @mentions
+- **GitHub org and repositories**: `config.yaml: github.*`
+- **Jira project keys**: `config.yaml: jira.projects[]` — each entry has a key, name, description, and ticket pattern
+- **Confluence spaces**: `config.yaml: confluence.spaces[]` — each entry has a key, name, and description
 
 ## Accountability Loop
 
@@ -30,16 +35,14 @@ This is non-negotiable. The daily plan keeps you focused. The weekly plan keeps 
 
 ## Capacity Model
 
-Assume the following unless the user provides different numbers:
+Defaults are defined in `config.yaml: capacity`. Use those values unless the user provides different numbers:
 
-```
-Daily productive hours:  5-6h  (not 8 — meetings, Slack, context switching)
-Weekly productive hours: 22-24h
-Meeting overhead:        8-10h/week (adjust based on actual calendar)
-Slack/comms overhead:    3h/week
-Context switching:       2h/week
-Interrupt buffer:        3h/week (non-negotiable — interrupts are guaranteed)
-```
+- **Daily productive hours**: `capacity.daily_productive_hours` (not 8 — meetings, Slack, context switching)
+- **Weekly productive hours**: `capacity.weekly_productive_hours`
+- **Meeting overhead**: `capacity.meeting_overhead` per week (adjust based on actual calendar)
+- **Slack/comms overhead**: `capacity.slack_overhead` per week
+- **Context switching**: `capacity.context_switching` per week
+- **Interrupt buffer**: `capacity.interrupt_buffer` per week (non-negotiable — interrupts are guaranteed)
 
 When assessing whether something fits in the schedule, always use the realistic capacity, never the theoretical 40h.
 
@@ -48,10 +51,12 @@ When assessing whether something fits in the schedule, always use the realistic 
 **The user chronically underestimates task duration.** Every estimate must account for this:
 
 1. Break tasks into subtasks including "hidden work" (PR review cycles, merge conflicts, Slack alignment, deploy verification)
-2. Apply multipliers based on familiarity:
-   - Familiar code + clear requirements: 1.5x gut estimate
-   - Unfamiliar code OR unclear requirements: 2x
-   - Unfamiliar code AND unclear requirements: 2.5x
+2. Apply multipliers from `config.yaml: estimation.multipliers` based on familiarity:
+   - Familiar code + clear requirements: `estimation.multipliers.familiar_clear`
+   - Familiar code + unclear requirements: `estimation.multipliers.familiar_unclear`
+   - Unfamiliar code + clear requirements: `estimation.multipliers.unfamiliar_clear`
+   - Unfamiliar code + unclear requirements: `estimation.multipliers.unfamiliar_unclear`
+   - System never touched: `estimation.multipliers.never_touched`
 3. Never give best-case as the timeline. Always communicate the realistic estimate.
 4. Track actuals vs estimates in the weekly plan to calibrate over time.
 
@@ -68,44 +73,33 @@ Weekly plans are stored at `context/weekly/YYYY-WNN.md` (e.g., `2026-W06.md`). S
 
 ## Slack Channel Map
 
-These are the channels to monitor, organized by category:
+Channel names and descriptions are defined in `config.yaml: slack.channels`, organized by category:
 
-**Product** (what's happening with the product):
-- `spot-product-issues` - Product bugs and customer-facing issues
-- `spot-product-updates` - Product announcements and changes
-- `product-issues` - Broader product issues
-- `product-updates` - Broader product updates
+- **Product** (`slack.channels.product`): Product health and customer-facing issues
+- **Engineering** (`slack.channels.engineering`): What the team is building
+- **Operations** (`slack.channels.operations`): Infrastructure, incidents, deployments
+- **General** (`slack.channels.general`): Company-wide and system alerts
 
-**Engineering** (what the team is building):
-- `spot-development` - Deployments, hotfixes, release pipeline notifications, engineering announcements
-- `spot-backend-devs` - Backend engineering discussion
-- `spot-pr-reviews` - PR review requests and discussions
-
-**Runtime** (infrastructure and operations):
-- `internal-runtime-team` - Runtime team internal comms
-- `runtime-deployment` - Deployment status and coordination
-- `runtime-daily-alerts` - Daily operational alerts
-
-**General**:
-- `general` - Company-wide
-- `spot-alerts` - System alerts
+Agents use these categories for priority ordering. Operations channels are checked first (incidents have highest urgency), then product, then engineering, then general.
 
 ## Jira Context
 
-- Project **AI1099**: The main AI product Jira board. Tickets follow the pattern `AI1099-NNNN`.
-- Project **RUN**: Runtime infrastructure. Tickets follow the pattern `RUN-NNN`.
-- When reviewing tickets, always check for linked Confluence docs, linked tickets, and recent comments.
+Jira projects are defined in `config.yaml: jira.projects[]`. Each project has:
+- A `key` used in JQL queries (e.g., `project = <key>`)
+- A `ticket_pattern` showing the ID format
+- A `name` and `description` for context
+
+When reviewing tickets, always check for linked Confluence docs, linked tickets, and recent comments.
 
 ## Confluence Context
 
-- Space **AI 1099**: Design docs, architecture RFCs, feature specs for the AI product.
-- Space **Runtime**: Infrastructure docs, runbooks, deployment procedures.
+Confluence spaces are defined in `config.yaml: confluence.spaces[]`. Each space has:
+- A `name` used in CQL queries (e.g., `space = "<name>"`)
+- A `description` of what lives there
 
 ## Quarterly Goals
 
-Joshua is on two teams with goals tracked across Jira epics and Confluence:
-- **AI1099 team**: Epics in AI1099 project + docs in "AI 1099" Confluence space
-- **Runtime team**: Epics in RUN project + docs in "Runtime" Confluence space
+The user's team structure is defined in `config.yaml: teams[]`. Each team maps to a Jira project and Confluence space for goal tracking.
 
 Goals file: `context/goals/YYYY-QN.md` (e.g., `2026-Q1.md`)
 
@@ -118,9 +112,10 @@ Weekly plans should always reference quarterly goals. If a weekly plan has no ho
 
 ## Calendar Integration
 
-Meeting data comes from Outlook Web via Chrome browser automation.
+Meeting data comes from the user's calendar via browser automation.
+- Calendar provider and URL are defined in `config.yaml: calendar`
 - Calendar file: `context/calendar/YYYY-WNN.md`
-- Run the `calendar-sync` agent to refresh from Outlook
+- Run the `calendar-sync` agent to refresh from the calendar
 - Morning triage and weekly planning use this for real capacity numbers instead of guesses
 - If the calendar file is stale (older than the current week), suggest re-syncing
 
@@ -140,7 +135,7 @@ This workspace leverages MCP integrations:
 - **Atlassian**: For Jira and Confluence (read tickets, search, read docs)
 - **Slack**: For channel reading, thread reading, and sending messages
 - **Figma**: For design context when reviewing UI-related work
-- **Chrome**: For reading Outlook Web calendar and other browser-based tasks
+- **Chrome**: For reading the calendar and other browser-based tasks
 
 When using these tools, always prefer structured summaries over raw dumps. Extract what matters, flag what needs attention, and skip the noise.
 
