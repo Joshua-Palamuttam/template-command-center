@@ -16,6 +16,8 @@ Only these file patterns may flow to the public template:
 
 - `.claude/CLAUDE.md` (with transformations — see below)
 - `.claude/agents/*.md` (excluding agents listed in `config.yaml: template.private_agents`)
+- `.claude/skills/*/SKILL.md` (excluding skills listed in `config.yaml: template.private_skills`)
+- `.claude/hooks/*.py` (excluding hooks listed in `config.yaml: template.private_hooks`)
 - `.claude/settings.local.json`
 - `.gitignore.template` → pushed **as** `.gitignore` on the template remote
 - `config.example.yaml`
@@ -34,11 +36,16 @@ These files must **NEVER** be synced to the public template:
 - `context/calibration.md`
 - `context/notes/*` (except `.gitkeep`)
 
-## Private Agents
+## Private Items
 
-Read `config.yaml: template.private_agents[]`. Any agent filename listed there is excluded from the safelist and skipped during diff/push.
+Read `config.yaml` to check three lists:
+- `template.private_agents[]` — any agent filename listed there is excluded from the safelist
+- `template.private_skills[]` — any skill name listed there is excluded from the safelist
+- `template.private_hooks[]` — any hook filename listed there is excluded from the safelist
 
 Example: if `private_agents: ["team-standup"]`, then `.claude/agents/team-standup.md` is never offered for push.
+Example: if `private_skills: ["my-workflow"]`, then `.claude/skills/my-workflow/SKILL.md` is never offered for push.
+Example: if `private_hooks: ["custom-check.py"]`, then `.claude/hooks/custom-check.py` is never offered for push.
 
 ## Modes
 
@@ -53,8 +60,8 @@ Compare safelist files between the private repo (`main`) and the public template
 **Steps:**
 
 1. Run `git fetch template main`
-2. Read `config.yaml` and extract `template.private_agents[]`
-3. For each safelist file, compare `main` vs `template/main`:
+2. Read `config.yaml` and extract `template.private_agents[]`, `template.private_skills[]`, and `template.private_hooks[]`
+3. For each safelist file (including skills and hooks), compare `main` vs `template/main`:
    - Use `git diff main template/main -- <file>` for each file
    - For `.gitignore`, compare `.gitignore.template` (local) against `.gitignore` (on template/main)
    - For `CLAUDE.md`, strip the `## Repository Setup` section from the local version before comparing
@@ -66,12 +73,16 @@ Compare safelist files between the private repo (`main`) and the public template
 | .claude/CLAUDE.md | Local ahead |
 | .claude/agents/morning-triage.md | Same |
 | .claude/agents/team-standup.md | SKIPPED (private agent) |
+| .claude/skills/standup/SKILL.md | New locally |
+| .claude/skills/my-workflow/SKILL.md | SKIPPED (private skill) |
+| .claude/hooks/plan-guard.py | Local ahead |
+| .claude/hooks/custom-check.py | SKIPPED (private hook) |
 | README.md | Template ahead |
 ```
 
-Statuses: `Same`, `Local ahead`, `Template ahead`, `New locally`, `New on template`, `SKIPPED (private agent)`
+Statuses: `Same`, `Local ahead`, `Template ahead`, `New locally`, `New on template`, `SKIPPED (private agent)`, `SKIPPED (private skill)`, `SKIPPED (private hook)`
 
-5. Skip any agent listed in `template.private_agents`
+5. Skip any agent listed in `template.private_agents`, any skill listed in `template.private_skills`, and any hook listed in `template.private_hooks`
 
 ---
 
@@ -136,16 +147,23 @@ Pull improvements from the public template into the private repo.
 
 ---
 
-### Mode 4: Add New Agent
+### Mode 4: Add New Item
 
-Convenience wrapper for pushing a single new agent to the template.
+Convenience wrapper for pushing a single new agent, skill, or hook to the template.
 
 **Steps:**
 
-1. Ask for the agent name (or accept as argument).
-2. Verify the file exists at `.claude/agents/<name>.md`.
-3. Read `config.yaml: template.private_agents[]` — if the agent is listed there, refuse and explain why.
-4. Run the personal data scan on the agent file.
+1. Ask for the item type (agent, skill, or hook) and name (or accept as arguments).
+2. Verify the file exists:
+   - Agent: `.claude/agents/<name>.md`
+   - Skill: `.claude/skills/<name>/SKILL.md`
+   - Hook: `.claude/hooks/<name>`
+3. Check the appropriate private list in `config.yaml`:
+   - Agent: `template.private_agents[]`
+   - Skill: `template.private_skills[]`
+   - Hook: `template.private_hooks[]`
+   If the item is listed, refuse and explain why.
+4. Run the personal data scan on the file.
 5. If clean, push via Mode 2 (with just this one file pre-selected).
 
 ---

@@ -128,7 +128,7 @@ Use the appropriate format based on scenario type.
 ### What the Research Found
 - Internal: [summary of relevant Confluence docs, Jira history, Slack threads]
 - External: [summary of industry perspective, case studies, benchmarks]
-- Prior art at SeekOut: [any previous attempts or related decisions]
+- Prior art internally: [any previous attempts or related decisions]
 
 ### Challenges to the Core Assumption
 1. [Genuine structural challenge with evidence]

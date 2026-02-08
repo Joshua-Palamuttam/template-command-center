@@ -8,7 +8,61 @@
       "mcp__claude_ai_Figma__*",
       "Bash(python:*)",
       "WebSearch",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(dir:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/session-start-check.py"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/pre-compact-context.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "mcp__claude_ai_Slack_MCP__slack_send_message",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/log-slack-send.py"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check if significant work was done this turn (file edits, Jira updates, Slack messages sent) but context/active/daily.md was not updated with progress. If work was done without a daily plan update, remind the user: 'Consider updating your daily plan with today's progress — run /wrap-up for a quick update.' Otherwise say nothing."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/inject-daily-context.py"
+          }
+        ]
+      }
     ]
   }
 }
